@@ -15,6 +15,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -32,17 +35,20 @@ public class HomeController {
     @Autowired
     private RabbitQueueService rabbitQueueService;
 
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
+
     @GetMapping("/")
     public String home(Principal principal){
         return "Hello, " + principal.getName();
     }
 
-    @PostMapping("/send")
+    /*@PostMapping("/send")
     public void send(@RequestBody SendMessageDto sendMessageDto){
         Message message = new Message();
         message.setText(sendMessageDto.getMess());
         rabbitTemplate.convertAndSend(topicExchangeName, sendMessageDto.getRoute(), message);
-    }
+    }*/
 
     @GetMapping("/update")
     public ResponseEntity<ApiResponseSingleOk> update(@RequestParam(value = "messageId") long id){
@@ -54,6 +60,13 @@ public class HomeController {
     @PostMapping("/create/room")
     public void createRoom(@RequestParam(value = "roomName") String roomName){
         rabbitQueueService.addNewQueue("room."+roomName, topicExchangeName, roomName);
+    }
+
+    @MessageMapping("/application")
+    @SendTo("/all/messages")
+    public SendMessageDto send(final SendMessageDto message) throws Exception {
+        System.out.println(message);
+        return message;
     }
 
 }
