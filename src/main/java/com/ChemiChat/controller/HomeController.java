@@ -73,7 +73,8 @@ public class HomeController {
 
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload SendMessageDto message) {
-        simpMessagingTemplate.convertAndSend("/specific/" + message.getTo(), message);
+        rabbitTemplate.convertAndSend(topicExchangeName, "foo.bar", message);
+        //simpMessagingTemplate.convertAndSend("/specific/" + message.getTo(), message);
     }
 
 }

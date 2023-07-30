@@ -47,4 +47,10 @@ public class RoomService {
             throw new RuntimeException("Room with id = {" + roomId+"} not found!");
         }).getHistory();
     }
+
+    public void sendMessage(String to, Message mess) {
+        Room room = roomRepository.findByName(to);
+        room.getHistory().add(mess);
+        roomRepository.save(room);
+    }
 }

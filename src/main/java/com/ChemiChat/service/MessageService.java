@@ -10,8 +10,8 @@ public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public void save(Message message){
-        messageRepository.save(message);
+    public Message save(Message message){
+        return messageRepository.save(message);
     }
 
     public Message getMessageById(Long id){

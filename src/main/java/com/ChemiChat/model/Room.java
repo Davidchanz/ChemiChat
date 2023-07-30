@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.List;
 
@@ -24,6 +25,6 @@ public class Room {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> members;
 
-    @OneToMany
-    private List<Message> history;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Message> history = new ArrayList<>();
 }
