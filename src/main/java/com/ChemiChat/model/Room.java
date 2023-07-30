@@ -5,22 +5,25 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
+import java.util.Set;
+import java.util.List;
 
-@Entity
-@Table(name = "MESSAGES")
-@Setter
 @Getter
-public class Message implements Serializable {
+@Setter
+@Entity
+@Table
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     @NotNull
     private Long id;
 
-    private String text;
-    @Column(name = "to_user")
-    private String to;
-    @Column(name = "from_user")
-    private String from;
+    private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> members;
+
+    @OneToMany
+    private List<Message> history;
 }

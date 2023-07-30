@@ -6,14 +6,16 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SendMessageDto {
-    private String mess;
-    private String route;
+    private String text;
+    private String to;
+    private String from;
 
     @Override
     public String toString() {
         return "SendMessageDto{" +
-                "mess='" + mess + '\'' +
-                ", route='" + route + '\'' +
+                "text='" + text + '\'' +
+                ", to='" + to + '\'' +
+                ", from='" + from + '\'' +
                 '}';
     }
 }
